@@ -6,7 +6,7 @@
       <option name="Python_Class" value="true" />
     </context>
   </template>
-  <template name="csv_reading" value="HEADERS = [$headers$]&#10;&#10;Row = namedtuple('CSVRow', field_names=HEADERS)&#10;&#10;&#10;def count_lines(filepath):&#10;    with open(filepath, 'r') as file_to_read:&#10;        return len(file_to_read.readlines())&#10;&#10;&#10;def parse_line(connection, row):&#10;    pass&#10;&#10;&#10;def import_from_csv(connection, filepath, separator=';'):&#10;    total = count_lines(filepath)&#10;    with open(filepath, 'r') as csvfile:&#10;        csvreader = reader(csvfile, separator=separator)&#10;        for vals in tqdm(csvreader, desc='Reading CSV', total=total):&#10;            row = Row(vals)&#10;            parse_line(connection, row)" toReformat="false" toShortenFQNames="true">
+  <template name="csv_reading" value="HEADERS = [$headers$]&#10;&#10;Row = namedtuple('CSVRow', field_names=HEADERS)&#10;&#10;&#10;def count_lines(filepath):&#10;    with open(filepath, 'r') as file_to_read:&#10;        return len(file_to_read.readlines())&#10;&#10;&#10;def parse_line(connection, row):&#10;    pass&#10;&#10;&#10;def import_from_csv(connection, filepath, separator=';'):&#10;    total = count_lines(filepath)&#10;    with open(filepath, 'r') as csvfile:&#10;        csvreader = reader(csvfile, separator=separator)&#10;        for vals in tqdm(csvreader, desc='Reading CSV', total=total):&#10;            row = Row(*vals)&#10;            parse_line(connection, row)" toReformat="false" toShortenFQNames="true">
     <variable name="headers" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="Python" value="true" />
