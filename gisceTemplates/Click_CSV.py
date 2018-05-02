@@ -28,9 +28,9 @@ def parse_line(connection, row):
 def import_from_csv(connection, filepath, separator=';'):
     total = count_lines(filepath)
     with open(filepath, 'r') as csvfile:
-        csvreader = reader(csvfile, separator=separator)
+        csvreader = reader(csvfile, delimiter=separator)
         for vals in tqdm(csvreader, desc='Reading CSV', total=total):
-            row = Row(vals)
+            row = Row(*vals)
             parse_line(connection, row)
 
 
@@ -53,9 +53,9 @@ def import_from_csv(connection, filepath, separator=';'):
 @click.option('-s', '--separator',
               help='Separator for the CSV file',
               type=str, default=';', show_default=True)
-@click.argument('filepath',
-                type=str)
+@click.argument('filepath', type=str)
 def import_file(host, port, database, user, password, separator, filepath):
+    separator = str(separator)
     server_url = '{host}:{port}'.format(**locals())
     c = Client(server=server_url, db=database, user=user, password=password)
     import_from_csv(c, filepath, separator=separator)
