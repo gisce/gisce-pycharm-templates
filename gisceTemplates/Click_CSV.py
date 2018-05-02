@@ -30,7 +30,15 @@ def import_from_csv(connection, filepath, separator=';'):
     with open(filepath, 'r') as csvfile:
         csvreader = reader(csvfile, delimiter=separator)
         for vals in tqdm(csvreader, desc='Reading CSV', total=total):
-            row = Row(*vals)
+            try:
+                row = Row(*vals)
+            except TypeError as err:
+                raise TypeError("Headers do not match row's columns!"
+                                "\n    {}"
+                                "\n    Got: {}"
+                                "\n    Expected: {}".format(err.message,
+                                                            vals,
+                                                            HEADERS))
             parse_line(connection, row)
 
 
