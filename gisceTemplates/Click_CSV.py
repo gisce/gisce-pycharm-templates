@@ -7,13 +7,7 @@ from tqdm import tqdm
 import click
 
 
-HEADERS = [
-    'column1',
-    'column2',
-    'column3',
-]
-
-Row = namedtuple('CSVRow', field_names=HEADERS)
+HEADERS = []
 
 
 def count_lines(filepath):
@@ -25,11 +19,18 @@ def parse_line(connection, row):
     pass
     
 
-def import_from_csv(connection, filepath, separator=';'):
+def import_from_csv(connection, filepath, separator=';', header=False):
     total = count_lines(filepath)
+    if HEADERS:
+        Row = namedtuple('CSVRow', field_names=HEADERS)
     with open(filepath, 'r') as csvfile:
         csvreader = reader(csvfile, delimiter=separator)
         for vals in tqdm(csvreader, desc='Reading CSV', total=total):
+            if header:
+                if not HEADERS:
+                    Row = namedtuple('CSVRow', field_names=vals)
+                header = False
+                continue
             try:
                 row = Row(*vals)
             except TypeError as err:
@@ -61,6 +62,9 @@ def import_from_csv(connection, filepath, separator=';'):
 @click.option('-s', '--separator',
               help='Separator for the CSV file',
               type=str, default=';', show_default=True)
+@click.option('--header/--no-header', '--separator',
+              help='If the file has the header',
+              default=True, show_default=True)
 @click.argument('filepath', type=str)
 def import_file(host, port, database, user, password, separator, filepath):
     separator = str(separator)
