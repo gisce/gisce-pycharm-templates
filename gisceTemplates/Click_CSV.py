@@ -62,15 +62,16 @@ def import_from_csv(connection, filepath, separator=';', header=False):
 @click.option('-s', '--separator',
               help='Separator for the CSV file',
               type=str, default=';', show_default=True)
-@click.option('--header/--no-header', '--separator',
+@click.option('--header/--no-header',
               help='If the file has the header',
               default=True, show_default=True)
 @click.argument('filepath', type=str)
-def import_file(host, port, database, user, password, separator, filepath):
+def import_file(
+        host, port, database, user, password, separator, header, filepath):
     separator = str(separator)
     server_url = '{host}:{port}'.format(**locals())
     c = Client(server=server_url, db=database, user=user, password=password)
-    import_from_csv(c, filepath, separator=separator)
+    import_from_csv(c, filepath, separator=separator, header=header)
 
 
 if __name__ == '__main__':
