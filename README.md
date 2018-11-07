@@ -3,7 +3,7 @@
 ### Install
 
 ```sh
-cp OpenERP.xml ~/.PyCharmXX/config/templates/
+cp GISCE.xml ~/.PyCharmXX/config/templates/
 cp gisceTemplates/* ~/.PyCharmXX/config/fileTemplates/
 ```
 
